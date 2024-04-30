@@ -4,4 +4,5 @@ channels:
 dependencies:
   - jsonschema=4.19.2=py312haa95532_0
   - jsonschema-specifications=2023.7.1=py312haa95532_0
+  - pre-commit=3.4.0=py312haa95532_1
 prefix: C:\Users\varfe\anaconda3\envs\bse_2.16
