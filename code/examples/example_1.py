@@ -4,6 +4,8 @@
 import json
 import sys
 from datetime import date
+
+
 def get_worker():
     """
     Запросить данные о работнике.
@@ -13,10 +15,11 @@ def get_worker():
     year = int(input("Год поступления? "))
     # Создать словарь.
     return {
-    'name': name,
-    'post': post,
-    'year': year,
+        "name": name,
+        "post": post,
+        "year": year,
     }
+
 
 def display_workers(staff):
     """
@@ -25,38 +28,33 @@ def display_workers(staff):
     # Проверить, что список работников не пуст.
     if staff:
         # Заголовок таблицы.
-        line = '+-{}-+-{}-+-{}-+-{}-+'.format(
-        '-' * 4,
-        '-' * 30,
-        '-' * 20,
-        '-' * 8
+        line = "+-{}-+-{}-+-{}-+-{}-+".format(
+            "-" * 4, "-" * 30, "-" * 20, "-" * 8
         )
         print(line)
         print(
-            '| {:^4} | {:^30} | {:^20} | {:^8} |'.format(
-                "№",
-                "Ф.И.О.",
-                "Должность",
-                "Год"
+            "| {:^4} | {:^30} | {:^20} | {:^8} |".format(
+                "№", "Ф.И.О.", "Должность", "Год"
             )
         )
         print(line)
-        
+
         # Вывести данные о всех сотрудниках.
         for idx, worker in enumerate(staff, 1):
             print(
-            '| {:>4} | {:<30} | {:<20} | {:>8} |'.format(
-                idx,
-                worker.get('name', ''),
-                worker.get('post', ''),
-                worker.get('year', 0)
+                "| {:>4} | {:<30} | {:<20} | {:>8} |".format(
+                    idx,
+                    worker.get("name", ""),
+                    worker.get("post", ""),
+                    worker.get("year", 0),
                 )
             )
         print(line)
-    
+
     else:
         print("Список работников пуст.")
-    
+
+
 def select_workers(staff, period):
     """
     Выбрать работников с заданным стажем.
@@ -66,10 +64,11 @@ def select_workers(staff, period):
     # Сформировать список работников.
     result = []
     for employee in staff:
-        if today.year - employee.get('year', today.year) >= period:
+        if today.year - employee.get("year", today.year) >= period:
             result.append(employee)
     # Возвратить список выбранных работников.
     return result
+
 
 def save_workers(file_name, staff):
     """
@@ -80,7 +79,8 @@ def save_workers(file_name, staff):
         # Выполнить сериализацию данных в формат JSON.
         # Для поддержки кирилицы установим ensure_ascii=False
         json.dump(staff, fout, ensure_ascii=False, indent=4)
-    
+
+
 def load_workers(file_name):
     """
     Загрузить всех работников из файла JSON.
@@ -89,21 +89,22 @@ def load_workers(file_name):
     with open(file_name, "r", encoding="utf-8") as fin:
         return json.load(fin)
 
+
 def main():
     """
     Главная функция программы.
     """
     # Список работников.
     workers = []
-    
+
     # Организовать бесконечный цикл запроса команд.
     while True:
-    # Запросить команду из терминала.
+        # Запросить команду из терминала.
         command = input(">>> ").lower()
         # Выполнить действие в соответствие с командой.
         if command == "exit":
             break
-        
+
         elif command == "add":
             # Запросить данные о работнике.
             worker = get_worker()
@@ -111,12 +112,12 @@ def main():
             workers.append(worker)
             # Отсортировать список в случае необходимости.
             if len(workers) > 1:
-                workers.sort(key=lambda item: item.get('name', ''))
-            
+                workers.sort(key=lambda item: item.get("name", ""))
+
         elif command == "list":
-        # Отобразить всех работников.
+            # Отобразить всех работников.
             display_workers(workers)
-            
+
         elif command.startswith("select "):
             # Разбить команду на части для выделения стажа.
             parts = command.split(maxsplit=1)
@@ -126,7 +127,7 @@ def main():
             selected = select_workers(workers, period)
             # Отобразить выбранных работников.
             display_workers(selected)
-        
+
         elif command.startswith("save "):
             # Разбить команду на части для выделения имени файла.
             parts = command.split(maxsplit=1)
@@ -134,7 +135,7 @@ def main():
             file_name = parts[1]
             # Сохранить данные в файл с заданным именем.
             save_workers(file_name, workers)
-            
+
         elif command.startswith("load "):
             # Разбить команду на части для выделения имени файла.
             parts = command.split(maxsplit=1)
@@ -142,8 +143,8 @@ def main():
             file_name = parts[1]
             # Сохранить данные в файл с заданным именем.
             workers = load_workers(file_name)
-            
-        elif command == 'help':
+
+        elif command == "help":
             # Вывести справку о работе с программой.
             print("Список команд:\n")
             print("add - добавить работника;")
@@ -156,5 +157,6 @@ def main():
         else:
             print(f"Неизвестная команда {command}", file=sys.stderr)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

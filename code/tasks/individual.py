@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
 import json
-from jsonschema import validate, ValidationError
+from datetime import datetime
+
+from jsonschema import ValidationError, validate
 
 
 def get_birthdate():
@@ -24,22 +25,21 @@ def add_person(list_of_people):
     birthdate = get_birthdate()
 
     person = {
-        'фамилия': last_name,
-        'имя': first_name,
-        'номер телефона': phone_number,
-        'дата рождения': str(birthdate),
+        "фамилия": last_name,
+        "имя": first_name,
+        "номер телефона": phone_number,
+        "дата рождения": str(birthdate),
     }
 
     list_of_people.append(person)
-    list_of_people.sort(key=lambda x: x['дата рождения'])
+    list_of_people.sort(key=lambda x: x["дата рождения"])
     print("Человек добавлен\n")
 
 
 def find_person_by_phone(people, phone):
     for person in people:
-        match person['номер телефона']:
-            case phone:
-                return person
+        if person["номер телефона"] == phone:
+            return person
     return None
 
 
@@ -47,13 +47,18 @@ def print_person_info(list_of_people):
     match list_of_people:
         case []:
             print("Человек не найден.\n")
-        case {'фамилия': f, 'имя': i, 'номер телефона': nt, 'дата рождения': dr}:
+        case {
+            "фамилия": f,
+            "имя": i,
+            "номер телефона": nt,
+            "дата рождения": dr,
+        }:
             print("\nИнформация о человеке:")
             print(f"Фамилия: {f}")
             print(f"Имя: {i}")
             print(f"Номер телефона: {nt}")
             print(f"Дата рождения: {dr}\n")
-            
+
 
 def save_to_json(file_name, list_of_people):
     """
@@ -65,6 +70,7 @@ def save_to_json(file_name, list_of_people):
         print(list_of_people)
         json.dump(list_of_people, fout, ensure_ascii=False, indent=4)
     print("Данные успешно сохранены в файл", file_name)
+
 
 def load_from_json(file_name):
     """
@@ -78,10 +84,11 @@ def load_from_json(file_name):
     else:
         False
 
+
 def check_validation_json(file_name):
-    with open('code/tasks/schema.json') as fs:
+    with open("code/tasks/schema.json") as fs:
         schema = json.load(fs)
-        
+
     try:
         validate(instance=file_name, schema=schema)
         return True
@@ -102,30 +109,38 @@ def main():
         choice = input("Выберите действие (1/2/3/4/5/6): ")
 
         match choice:
-            case '1':
+            case "1":
                 add_person(list_of_people)
 
-            case '2':
+            case "2":
                 phone_to_find = input("Введите номер телефона для поиска: ")
-                found_person = find_person_by_phone(list_of_people, phone_to_find)
+                found_person = find_person_by_phone(
+                    list_of_people, phone_to_find
+                )
                 print_person_info(found_person)
 
-            case '3':
-                for _ in list_of_people: print_person_info(_)
+            case "3":
+                for _ in list_of_people:
+                    print_person_info(_)
 
-            case '4':
-                file_name = str(input("Введите имя файла(без расширения): ")) + '.json'
+            case "4":
+                file_name = (
+                    str(input("Введите имя файла(без расширения): ")) + ".json"
+                )
                 save_to_json(file_name, list_of_people)
 
-            case '5':
-                file_name = str(input("Введите имя файла(без расширения): ")) + '.json'
+            case "5":
+                file_name = (
+                    str(input("Введите имя файла(без расширения): ")) + ".json"
+                )
                 list_of_people = load_from_json(file_name)
-            case '6':
+            case "6":
                 print("Программа завершена.\n")
                 break
 
             case _:
                 print("Некорректный ввод. Попробуйте снова.\n")
+
 
 if __name__ == "__main__":
     main()
