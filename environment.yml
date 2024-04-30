@@ -1,0 +1,7 @@
+name: bse_2.16
+channels:
+  - defaults
+dependencies:
+  - jsonschema=4.19.2=py312haa95532_0
+  - jsonschema-specifications=2023.7.1=py312haa95532_0
+prefix: C:\Users\varfe\anaconda3\envs\bse_2.16

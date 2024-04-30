@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Person",
+    "properties": {
+        "имя": {
+            "type": "string"
+        },
+        "фамилия": {
+            "type": "string"
+        },
+        "номер телефона": {
+            "type": "string"
+        },
+        "дата рождения": {
+            "type": "string"
+        }
+
+    },
+    "required": ["имя", "фамилия", "номер телефона", "дата рождения"],
+    "additionalProperties": false
+}
+
