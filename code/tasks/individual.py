@@ -79,10 +79,10 @@ def load_from_json(file_name):
     with open(file_name, "r", encoding="utf-8") as fin:
         document = json.load(fin)
 
-    if all(list(map(lambda x: check_validation_json(x), document))):
-        return document
-    else:
-        False
+        if all(list(map(lambda x: check_validation_json(x), document))):
+            return document
+        else:
+            False
 
 
 def check_validation_json(file_name):
